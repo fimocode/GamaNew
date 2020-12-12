@@ -1,4 +1,0 @@
-Init
-nb_preys_init: 200
-nb_predators_init: 30
-seed : 3.0
