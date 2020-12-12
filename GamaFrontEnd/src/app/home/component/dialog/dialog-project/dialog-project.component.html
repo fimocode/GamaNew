@@ -1,0 +1,28 @@
+<div id="myModal" class="modal modal-template-group-detail show">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header clearfix">
+                <h4 class="modal-title pull-left">{{data.title}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group clearfix" style="height: 60px;"> 
+                    <label>Name</label>
+                    <div class="input-item">
+                        <input type="text" placeholder="Project Name" id="name" style="height: 40px;" autofocus [(ngModel)]="projectName">
+                        <span style="color: red;" *ngIf="isErrorName">Project Name can not empty!</span>
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label>Description</label>
+                    <div class="input-item">
+                        <textarea rows="4" cols="50" class="textarea" placeholder="Description" [(ngModel)]="description"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-success" (click)="save()">Save</button>
+                <button type="button" class="btn btn-primary" mat-dialog-close>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

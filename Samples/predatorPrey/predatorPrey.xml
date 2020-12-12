@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Simulation id="1" sourcePath="./models/predatorPrey.gaml" finalStep="281" experiment="prey_predatorExp" seed="3">
+    <Parameters>
+        <Parameter name="Nb Preys: " type="INT" value="200"/>
+        <Parameter name="Nb predators: " type="INT" value="30"/>
+    </Parameters>
+    <Outputs>
+        <Output id="1" name="main_display" frameRate="5"/>
+        <Output id="2" name="Number of preys" frameRate="5"/>
+        <Output id="3" name="Number of predators" frameRate="5"/>
+    </Outputs>
+    <folderName>predatorPrey</folderName>
+</Simulation>
