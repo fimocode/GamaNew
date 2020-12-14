@@ -42,11 +42,11 @@
                             </a>
                         </div>
                         <div class="final-step">
-                            <input type="range" id="input-range" (input)="setFinalStep(finalStep.value)" #finalStep [ngModel]="fileSelected?.finalStep" name="points" min="0" max="1000">
+                            <input type="range" id="input-range" (input)="setFinalStep(finalStep.value)" #finalStep [ngModel]="fileSelected?.finalStep" name="points" min="0" max="500">
                             <span class="step-value">{{fileSelected?.finalStep}}</span>
                         </div>
                         <div class="div-next">
-                            <a href="">
+                            <a href="javascript:void(0)" (click)="resetFinalStepValue()">
                                 <img src="../../../assets/images/icons8-reset-50.png" alt="" class="play-control">
                             </a>
                         </div>
@@ -157,7 +157,7 @@
                     <div class="nav nav-tabs" style="background:  rgb(204, 204, 204); border-bottom: none;">
                         <div class="nav-item nav-item2" style="background: #fff; width: 13%;">
                             <div style="display: flex; align-items: center;">
-                                <img src="../../../assets/images/icons8-rounded-square-96.png" alt="" class="model-tab" style="border: solid 1px #555; border-radius: 5px;margin-top: 3px; width: 19px;">
+                                <img src="../../../assets/images/icons8-rounded-square-96.png" alt="" class="model-tab img-common">
                                 <label for="" style="margin-left: 10px;">map</label>
                             </div>
                         </div>
@@ -209,7 +209,7 @@
                     <div class="nav nav-tabs" style="background:  rgb(204, 204, 204); border-bottom: none;">
                         <div class="nav-item nav-item2" style="background: #fff; width: 25%;">
                             <div style="display: flex; align-items: center;">
-                                <img src="../../../assets/images/icons8-rounded-square-96.png" alt="" class="model-tab" style="border: solid 1px #555; border-radius: 5px;margin-top: 3px; width: 19px;">
+                                <img src="../../../assets/images/icons8-rounded-square-96.png" alt="" class="model-tab img-common">
                                 <label *ngIf="fileSelected" for="" style="margin-left: 10px;">{{fileSelected.name}}</label>
                             </div>
                         </div>
@@ -217,24 +217,23 @@
 
                         </div>
                     </div>
-                    <div style="height: 495px; margin-top: 35px;" *ngIf="fileSelected">
-                        <!-- <angular-editor class="angular-editor" [(ngModel)]="contentFile" [config]="config"></angular-editor> -->
+                    <div style="height: 495px;" *ngIf="fileSelected">
+                        <div class="save" (click)="saveFile()">
+                            <img src="../../../assets/images/icons8-save-64.png" alt="" class="model-tab"> Save
+                        </div>
                         <textarea [(ngModel)]="contentFile" style="width: 100%; height: 100%;"></textarea>
                     </div>
-                    <!-- <div style="height: 495px; margin-top: 35px;" *ngIf="isCreateNewFile">
-                        <textarea [(ngModel)]="contentFile" style="width: 100%; height: 100%;"></textarea>
-                    </div> -->
                 </div>
                 <div style="height: 100%; width: 20%;">
                     <div class="nav nav-tabs" style="background:  rgb(204, 204, 204); border-bottom: none;">
                         <div class="nav-item nav-item2" style="background: #fff; width: 30%;">
                             <div style="display: flex; align-items: center;">
-                                <img src="../../../assets/images/icons8-rounded-square-96.png" alt="" class="model-tab" style="border: solid 1px #555; border-radius: 5px;margin-top: 3px; width: 19px;">
+                                <img src="../../../assets/images/icons8-rounded-square-96.png" alt="" class="model-tab img-common">
                                 <label for="" style="margin-left: 10px;">map</label>
                             </div>
                         </div>
                         <div style="width: 100%; border-bottom: solid 1px #555;">
-                            <img style="object-fit: contain;" src="{{chartUrl}}" alt="" *ngIf="chartUrl" />
+                            <!-- <img style="object-fit: contain;" src="{{chartUrl}}" alt="" *ngIf="chartUrl" /> -->
                         </div>
                     </div>
                 </div>

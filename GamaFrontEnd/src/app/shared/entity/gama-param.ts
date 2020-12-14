@@ -3,12 +3,12 @@ export class Param {
     name: string;
     type: string;
     value: string;
-    typeName: string;
-    fileId: Number;
+    gamaFileId: Number;
 
-    constructor(name?: string, type?: string, value?: string) {
+    constructor(name?: string, type?: string, value?: string, gamaFileId?: Number) {
         this.name = name;
         this.type = type;
         this.value = value;
+        this.gamaFileId = gamaFileId;
     }
 }

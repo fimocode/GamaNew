@@ -21,6 +21,7 @@ export class SimulationService {
   }
 
   runMap(output: Output): Observable<Output> {
-    return this.http.put<Output>(`${this.urlXmlFile}/map`, output);
+    return this.http.post<Output>(`${this.urlXmlFile}/map`, output);
   }
+ 
 }

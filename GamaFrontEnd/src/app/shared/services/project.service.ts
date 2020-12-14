@@ -32,7 +32,7 @@ export class ProjectService {
    * @param project project need to edit
    */
   editProject(project: Project): Observable<Project> {
-    return this.http.put<Project>(`${this.urlProject}/${project.id}`, project);
+    return this.http.put<Project>(this.urlProject, project);
   }
   /**
    * delete project

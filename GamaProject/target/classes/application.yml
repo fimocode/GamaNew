@@ -1,0 +1,5 @@
+amazonProperties:
+      endpointUrl: https://s3.us-east-2.amazonaws.com
+      accessKey: AKIARIBQZOIFXWXBGKME 
+      secretKey: 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
+      bucketName: hoainguyen

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Simulation id="1" sourcePath="./models/roadTraffic.gaml" finalStep="500" experiment="road_traffic" seed="3">
+<Simulation id="1" sourcePath="./models/roadTraffic.gaml" finalStep="200" experiment="road_traffic" seed="3">
     <Parameters/>
     <Outputs>
         <Output id="1" name="city_display" frameRate="5"/>

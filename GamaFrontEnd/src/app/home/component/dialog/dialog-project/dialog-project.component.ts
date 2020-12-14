@@ -39,9 +39,16 @@ export class DialogProjectComponent implements OnInit {
     project.description = this.description;
     project.createAt = new Date().toString();
     project.userId = this.userId;
-    this.projectService.addProject(project).subscribe(projectData => {
-      this.dialogRef.close(projectData);
-    });
+    if(this.data.projectData.id) {
+      project.id = this.data.projectData.id;
+      this.projectService.editProject(project).subscribe(projectData => {
+        this.dialogRef.close(projectData);
+      });
+    } else {
+      this.projectService.addProject(project).subscribe(projectData => {
+        this.dialogRef.close(projectData);
+      });
+    }
   }
 
 }
