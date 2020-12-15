@@ -83,6 +83,7 @@ export class GamaFileComponent implements OnInit {
     this.clearIntervalList(this.intervalListMessage);
     this.messageConsoles = [];
     this.imageUrl = undefined;
+    this.chartUrl = undefined;
   }
 
   openInteractive() {
@@ -171,22 +172,35 @@ export class GamaFileComponent implements OnInit {
         this.simulationService.runXmlFile(result).subscribe(data => {
           this.urlImages = new Array<string>();
           var fileName = this.fileSelected.name.substring(0, this.fileSelected.name.indexOf('.'));
-          for (let i = 0; i < this.fileSelected.finalStep; i += 5) {
-            this.urlImages.push(this.fileSelected.outputName + "1-" + i + ".png");
+          if(this.outputDisplays.length == 1) {
+            for (let i = 0; i < this.fileSelected.finalStep; i += 5) {
+              this.urlImages.push(this.outputDisplays[0].name + "1-" + i + ".png");
+            }
+            this.simulationService.runMap(new Output(null, fileName, 5, this.urlImages)).subscribe(data => {
+              this.output = data;
+              this.toastr.success("Save successful.");
+            });
+          } else {
+            for (let i = 0; i < this.fileSelected.finalStep; i += 5) {
+              this.urlImages.push(this.outputDisplays[0].name + "1-" + i + ".png");
+              this.urlImages.push(this.outputDisplays[1].name + "1-" + i + ".png");
+            }
+            this.simulationService.runMap(new Output(null, fileName, 5, this.urlImages)).subscribe(data => {
+              this.output = data;
+              this.toastr.success("Save successful.");
+            });
           }
-          this.simulationService.runMap(new Output(null, fileName, 5, this.urlImages)).subscribe(data => {
-            this.output = data;
-            this.toastr.success("Save successful.");
-          });
+          
         });
       });
     })
   }
-
+  outputDisplays: Array<Output>;
   saveChangeFileXML() {
     this.listParams = new Array<Param>();
     let outputs = new Array<Output>();
     var outputIndex = 0;
+    this.outputDisplays = new Array<Output>();
     for (const line of this.fileSelected.content.split(/[\r\n]+/)) {
       if (line.includes('experiment')) {
         let arrayChar = line.split(' ');
@@ -199,6 +213,7 @@ export class GamaFileComponent implements OnInit {
         this.fileSelected.outputName = display;
         outputIndex++;
         outputs.push(new Output(outputIndex, display, 5));
+        this.outputDisplays.push(new Output(outputIndex, display, 5));
       }
       if (line.includes('monitor')) {
         let arrayString = line.split('"');
@@ -217,7 +232,7 @@ export class GamaFileComponent implements OnInit {
             param.type = arrayEnd[2];
             for (const line of this.fileSelected.content.split(/[\r\n]+/)) {
               if (line.includes(param.type + " <-")) {
-                let array = line.split(' ');
+                let array = line.trim().split(' ');
                 param.type = array[0].trim().toUpperCase();
                 param.value = array[3].substring(0, array[3].indexOf(';'));
               }
@@ -271,6 +286,7 @@ export class GamaFileComponent implements OnInit {
       item.projectId = $this.projectId;
       item.finalStep = 200;
       let outputs = new Array<Output>();
+      $this.outputDisplays = new Array<Output>();
       var outputIndex = 0;
       for (const line of theBytes.split(/[\r\n]+/)) {
         if (line.includes('experiment')) {
@@ -284,6 +300,7 @@ export class GamaFileComponent implements OnInit {
           item.outputName = display;
           outputIndex++;
           outputs.push(new Output(outputIndex, display, 5));
+          $this.outputDisplays.push(new Output(outputIndex, display, 5));
         }
         if (line.includes('monitor')) {
           let arrayString = line.split('"');
@@ -301,7 +318,7 @@ export class GamaFileComponent implements OnInit {
               param.type = arrayEnd[2];
               for (const line of theBytes.split(/[\r\n]+/)) {
                 if (line.includes(param.type + " <-")) {
-                  let array = line.split(' ');
+                  let array = line.trim().split(' ');
                   param.type = array[0].trim().toUpperCase();
                   param.value = array[3].substring(0, array[3].indexOf(';'));
                 }
@@ -333,53 +350,52 @@ export class GamaFileComponent implements OnInit {
     this.clearIntervalList(this.intervalListMessage);
   }
 
+  urlImagesSimulation: Array<string>;
   runFile() {
     this.isRunFile = true;
     this.isOpenGraph = true;
     this.isOpenModel = false;
     this.isOpenInteractive = false;
     this.isOpenConsole = true;
-    if (this.index >= this.urlImages.length - 1) {
+    if (this.urlImages && this.index >= this.urlImages.length - 1) {
       this.index = 0;
     }
-    // this.urlCharts = new Array<string>();
-    this.messageConsoles = new Array<string>();
-    // for (let i = 0; i < 200; i += 5) {
-    //   this.urlCharts.push("Population_information1-" + i + ".png");
-    // }
-    let $this = this;
-    $this.imageUrl = this.output.urlImage[$this.index];
-    $this.messageConsoles.push(`Message at cycle ${$this.messageIndex}`);
+    this.urlImagesSimulation = this.output.urlImage.filter(url => url.includes(this.outputDisplays[0].name));
+    this.urlCharts = this.output.urlImage.filter(url => this.outputDisplays.length > 1 && url.includes(this.outputDisplays[1].name));
+    this.imageUrl = this.urlImagesSimulation[this.index];
     let imageInterval = setInterval(() => {
-      if ($this.index >= $this.urlImages.length - 1) {
-        $this.imageUrl = this.output.urlImage[$this.urlImages.length - 1];
+      if (this.index >= this.urlImagesSimulation.length - 1) {
+        this.imageUrl = this.urlImagesSimulation[this.urlImagesSimulation.length - 1];
         clearInterval(imageInterval);
         return;
       }
-      $this.index++;
-      $this.imageUrl = this.output.urlImage[$this.index];
-      console.log($this.imageUrl);
+      this.index++;
+      this.imageUrl = this.urlImagesSimulation[this.index];
     }, 1000);
     this.intervalListImage.push(imageInterval);
 
-    // $this.chartUrl = `../../../assets/${fileName}/snapshot/${$this.urlCharts[$this.indexChart]}`;
-    // let chartInterval = setInterval(() => {
-    //   if ($this.indexChart >= $this.urlCharts.length - 1) {
-    //     $this.chartUrl = `../../../assets/${fileName}/snapshot/${$this.urlCharts[$this.urlCharts.length - 1]}`;
-    //     clearInterval(chartInterval);
-    //     return;
-    //   }
-    //   $this.indexChart++;
-    //   $this.chartUrl = `../../../assets/${fileName}/snapshot/${$this.urlCharts[$this.indexChart]}`;
-    // }, 300);
-    // this.intervalListChart.push(chartInterval);
+    if(this.urlCharts && this.urlCharts.length > 0) {
+      this.chartUrl = this.urlCharts[this.indexChart];
+      let chartInterval = setInterval(() => {
+        if (this.indexChart >= this.urlCharts.length - 1) {
+          this.chartUrl = this.urlCharts[this.urlCharts.length - 1];
+          clearInterval(chartInterval);
+          return;
+        }
+        this.indexChart++;
+        this.chartUrl = this.urlCharts[this.indexChart];
+      }, 1000);
+      this.intervalListChart.push(chartInterval);
+    }
+    this.messageConsoles = new Array<string>();
+    this.messageConsoles.push(`Message at cycle ${this.messageIndex}`);
     let messageInterval = setInterval(() => {
-      if ($this.messageIndex >= $this.fileSelected.finalStep - 1) {
+      if (this.messageIndex >= this.fileSelected.finalStep - 1) {
         clearInterval(messageInterval);
         return;
       }
-      $this.messageIndex++;
-      $this.messageConsoles.push(`Message at cycle ${$this.messageIndex}`);
+      this.messageIndex++;
+      this.messageConsoles.push(`Message at cycle ${this.messageIndex}`);
     }, 200);
     this.intervalListMessage.push(messageInterval);
 

@@ -286,3 +286,11 @@ textarea:focus {
     margin-bottom: 5px;
     cursor: pointer;
 }
+
+.chart {
+    width: 100%;
+    border-bottom: solid 1px #555;
+    display: flex;
+    justify-content: center;
+    margin-top: 30%;
+}

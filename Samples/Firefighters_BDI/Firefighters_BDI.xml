@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Simulation id="1" sourcePath="./models/Firefighters_BDI.gaml" finalStep="500" experiment="fight_fire" seed="3">
+<Simulation id="1" sourcePath="./models/Firefighters_BDI.gaml" finalStep="200" experiment="fight_fire" seed="3">
     <Parameters/>
     <Outputs>
         <Output id="1" name="view1" frameRate="5"/>
